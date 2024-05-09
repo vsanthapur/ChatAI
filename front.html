@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat with AI</title>
+    <style>
+        #chatbox {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            height: 300px;
+            overflow-y: auto;
+            width: 300px;
+        }
+        .message {
+            margin: 5px;
+            padding: 5px;
+            border-radius: 10px;
+        }
+        .user {
+            background-color: #e9e9ff;
+            text-align: right;
+        }
+        .ai {
+            background-color: #f1f1f1;
+            text-align: left;
+        }
+        #controls {
+            display: flex;
+            align-items: center;
+        }
+        #modelSelect {
+            margin-bottom: 10px;
+            margin-right: 10px;
+            display: block;
+            width: auto;
+            height: 25px;
+        }
+        #clearButton {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Chat AI</h1>
+    <label for="modelSelect">Choose a model:</label>
+    <select id="modelSelect" onchange="modelChanged()">
+        <option value="Auto">Auto</option>
+        <option value="GPT">GPT</option>
+        <option value="Gemini">Gemini</option>
+    </select>
+    <div id="chatbox"></div>
+    <div id="controls">
+        <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+        <button id="sendButton" onclick="sendMessage()">Send</button>
+        <button id="clearButton" onclick="clearChat()">Clear Chat</button>
+    </div>
+
+    <script>
+        let model = "Auto"; // Default model
+
+        function modelChanged() {
+            model = document.getElementById('modelSelect').value;
+            clearChat(); // Clear chat when model changes
+        }
+
+        function clearChat() {
+            document.getElementById('chatbox').innerHTML = ''; // Clears the chat content
+        }
+
+        function sendMessage() {
+            const inputElement = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            if (inputElement.disabled) return; // Prevent sending if input is disabled
+            const input = inputElement.value;
+            if (!input.trim()) return; // Prevent sending empty messages
+            displayMessage(input, 'user');
+            inputElement.value = ''; // Clear input after sending
+            inputElement.disabled = true; // Disable input during AI response
+            sendButton.disabled = true; // Disable send button during AI response
+
+            // Simulated AI response
+            const responseText = "Hello, I am a " + model + " chat bot. I will give you your response.";
+            displayMessageWithDelay(responseText);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                if (!document.getElementById('sendButton').disabled){
+                    sendMessage();
+                    event.preventDefault(); // Prevent the default action to avoid form submission behavior
+
+                }
+            }
+        }
+
+        function displayMessageWithDelay(text) {
+            const words = text.split(' ');
+            const chatbox = document.getElementById('chatbox');
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message', 'ai');
+            chatbox.appendChild(msgDiv);
+
+            let index = 0;
+            const interval = setInterval(() => {
+                document.getElementById('userInput').disabled = false;
+                if (index < words.length) {
+                    msgDiv.textContent += words[index] + ' ';
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    //document.getElementById('userInput').disabled = false; // Re-enable input after AI finishes typing
+                    document.getElementById('sendButton').disabled = false; // Re-enable send button after AI finishes typing
+                }
+                chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+            }, 200); // Typing speed set to 200 ms between words
+        }
+
+        function displayMessage(message, author) {
+            const chatbox = document.getElementById('chatbox');
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message', author);
+            msgDiv.textContent = message;
+            chatbox.appendChild(msgDiv);
+            chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+        }
+    </script>
+</body>
+</html>
