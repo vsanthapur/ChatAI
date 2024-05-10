@@ -4,56 +4,80 @@
     <meta charset="UTF-8">
     <title>Chat with AI</title>
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #container {
+            text-align: center;
+        }
+
         #chatbox {
             border: 1px solid #ccc;
             padding: 10px;
-            margin: 10px 0;
+            margin: 10px auto;
             height: 300px;
             overflow-y: auto;
             width: 300px;
         }
+
         .message {
             margin: 5px;
             padding: 5px;
             border-radius: 10px;
         }
+
         .user {
             background-color: #e9e9ff;
             text-align: right;
         }
+
         .ai {
             background-color: #f1f1f1;
             text-align: left;
         }
+
         #controls {
             display: flex;
             align-items: center;
+            justify-content: center;
+            margin-top: 10px;
         }
+
         #modelSelect {
             margin-bottom: 10px;
             margin-right: 10px;
             display: block;
             width: auto;
             height: 25px;
+            margin: auto;
+            
         }
+
         #clearButton {
             margin-left: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to Chat AI</h1>
-    <label for="modelSelect">Choose a model:</label>
-    <select id="modelSelect" onchange="modelChanged()">
-        <option value="Auto">Auto</option>
-        <option value="GPT">GPT</option>
-        <option value="Gemini">Gemini</option>
-    </select>
-    <div id="chatbox"></div>
-    <div id="controls">
-        <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
-        <button id="sendButton" onclick="sendMessage()">Send</button>
-        <button id="clearButton" onclick="clearChat()">Clear Chat</button>
+    <div id="container" style="text-align: center;">
+        <h1>Welcome to Chat AI</h1>
+        <label for="modelSelect">Choose a model:</label>
+        <select id="modelSelect" onchange="modelChanged()">
+            <option value="Auto">Auto</option>
+            <option value="GPT">GPT</option>
+            <option value="Gemini">Gemini</option>
+        </select>
+        <div id="chatbox"></div>
+        <div id="controls">
+            <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+            <button id="sendButton" onclick="sendMessage()">Send</button>
+            <button id="clearButton" onclick="clearChat()">Clear Chat</button>
+        </div>
     </div>
 
     <script>
